@@ -10,7 +10,10 @@ def index(request):
 
 def get_poi(request):
 	poi = PoiGenerator()
-	poiGroupName,username = request.GET['poiGroupName'], request.GET['username']
-	pois = poi.getPoiGroupMembersByName(poiGroupName,username)
-	return HttpResponse(str(pois))
+	username,lat,lng = request.GET['username'], request.GET['lat'],request.GET['lng']
+	pois = poi.getPoiGroupByGps(username,int(lat),int(lng))
+	res = ''
+	for poi in pois:
+		res += poi+' '
+	return HttpResponse(res)
 

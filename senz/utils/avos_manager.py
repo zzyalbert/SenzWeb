@@ -7,6 +7,9 @@ import requests
 import settings
 from util_opt import *
 
+import warnings
+warnings.filterwarnings("ignore")
+
 class AvosClass(AVObject):
     def __init__(self):
         super(AvosClass, self).__init__()
@@ -26,7 +29,7 @@ class AvosManager(object):
                     url = AvosClass.Users,
                     headers = AvosClass.headers(),
                     data = json.dumps(userInfo),
-                    verify=True)
+                    verify=False)
                 if 'createdAt' not in json.loads(res.content):
                         print 'Error: '+res.content
                 else:
@@ -42,7 +45,7 @@ class AvosManager(object):
                     url = AvosClass.Users,
                     headers=AvosClass.headers(),
                     params=with_params,
-                    verify=True
+                    verify=False
                 )
                 if not res.ok:
                         print 'Error'+res.content
@@ -58,10 +61,12 @@ class AvosManager(object):
                     AvosClass.base_classes+className,
                     headers=AvosClass.headers(),
                     params=kwargs,
-                    verify=True
+                    verify=False
                 )
                 if 'error' not in json.loads(res.content):
                         return res.content
+                else:
+                    print res.content
                 
         #By Zhong.zy, Save activity in a same interface
         def saveActivity(self,dataDict):
@@ -75,6 +80,15 @@ class AvosManager(object):
                         results = json.loads(res)['results']
                         if results:
                                 return results[0]['objectId']
+
+        #By Zhong.zy, Get field in terms of some condition        
+        def getFieldByCondition(self,className,field,**kwargs):
+                cond = json.dumps(kwargs)
+                res = self.getData(className,keys=field,where=cond)
+                if res:
+                        results = json.loads(res)['results']
+                        if results:
+                                return results[0][field]
 
         #By Zhong.zy, Get id in order to update data
         def getIdByName(self,className,objName):
@@ -120,7 +134,8 @@ if __name__ == "__main__":
         className = "testDate"
         #avosManager.saveData(className,dataDict)
         #avosManager.saveActivity(dataDict)
-        avosManager.updateDataByName('activities','《文成公主》大型实景剧',dict(ticket='200'))
+        #avosManager.updateDataByName('activities','《文成公主》大型实景剧',dict(ticket='200'))
+        print avosManager.getIdByCondition(className,name='《文成公主》大型实景剧')
         '''
         AvosClass.app_settings = [settings.avos_app_id, settings.avos_app_key]
         res = AvosClass.save(dataDict)

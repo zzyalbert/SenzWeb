@@ -6,7 +6,7 @@ import json
 
 
 class AVObject(object):
-    base = r'https://cn.avoscloud.com' #leancloud.cn
+    base = r'https://leancloud.cn' #cn.avoscloud.com
     base_classes = base+r'/1.1/classes/'
     base_patch = base+r'/1.1/batch'
     Users = base+r'/1.1/users'
@@ -42,7 +42,7 @@ class AVObject(object):
                 AVObject.base_classes+cls_name,
                 data=json.dumps(data),
                 headers=cls.headers(),
-                verify=True
+                verify=False
             )
 
     @classmethod
@@ -59,7 +59,7 @@ class AVObject(object):
             get_url,
             headers=cls.headers(),
             params=with_params,
-            verify=True
+            verify=False
         )
 
     @classmethod
@@ -85,7 +85,7 @@ class AVObject(object):
                 put_url,
                 data=json.dumps(plus_ob),
                 headers=cls.headers(),
-                verify=True
+                verify=False
             )
         else:
             return None
@@ -107,7 +107,7 @@ class AVObject(object):
             return requests.delete(
                 remove_url,
                 headers=cls.headers(),
-                verify=True
+                verify=False
             )
         else:
             return None
@@ -118,7 +118,7 @@ class AVObject(object):
             AVObject.base_patch,
             data=json.dumps({'requests': patch_ob_list}),
             headers=cls.headers(),
-            verify=True
+            verify=False
         )
 
     #utility function

@@ -1,5 +1,8 @@
-# -*- encoding:utf-8 -*-
+# -*- encoding=utf-8 -*-
 #__author__ = 'Zhong.zy'
+
+import sys
+#sys.path.append('../utils')
 
 import json
 from avos_manager import *
@@ -8,6 +11,11 @@ from util_opt import *
 class PoiGenerator(object):
         def __init__(self):
                 self.avos = AvosManager()
+
+        def inQueryDict(self,className, **kwargs):
+                cond={'where':kwargs,'className':className}
+                query={'$inQuery':cond}
+                return query
                 
         def addPoiGroupByName(self,name,username):
                 userId = self.avos.getUserIdByName(username)
@@ -21,7 +29,15 @@ class PoiGenerator(object):
         def getPoiGroupIdByName(self,poiGroupName,username):
                 user = dict(__type='Pointer',className='_User',
                             objectId=self.avos.getUserIdByName(username))
-                return self.avos.getIdByCondition('PoiGroup',name=poiGroupName,owner=user)               
+                return self.avos.getIdByCondition('PoiGroup',name=poiGroupName,owner=user)
+
+        def getPoiGroupByGps(self,user,lat,lng):
+                inQuery = self.inQueryDict('PoiGroup',owner=self.inQueryDict('_User',username=user))
+                cond = dict(location=gps2GeoPoint(lat,lng),poiGroup=inQuery)
+                res = self.avos.getData('PoiGroupMember',keys='poiGroup.name',include='poiGroup',where=json.dumps(cond))
+                poiGroups = [ (poiGroup['poiGroup']['name']).encode('utf-8') for poiGroup in json.loads(res)['results']]
+                return poiGroups
+
 
         def addPoiGroupMemberByName(self,poiGroupName,username,lat,lng):
                 poiGroupId = self.getPoiGroupIdByName(poiGroupName,username)
@@ -66,9 +82,10 @@ class PoiGenerator(object):
 
 if __name__ == '__main__':
         poi = PoiGenerator()
-        #poi.addPoiGroupByName('跑步','zhong1')
+        #poi.addPoiGroupByName('公园','zhong1')
         #for i in range(1,6):
-        #        poi.addPoiGroupMemberByName('跑步','zhong1',11+i,113)
+        #        poi.addPoiGroupMemberByName('公园','zhong1',11+i,113)
         #poi.deletePoiGroupMemberByName('跑步','zhong2',13,113)
         #poi.deletePoiGroupByName('跑步','zhong1')
-        print poi.getPoiGroupMembersByName('跑步','zhong1')
+        #print poi.getPoiGroupMembersByName('跑步','zhong1')
+        poi.getPoiGroupByGps('zhong1',16,113)
