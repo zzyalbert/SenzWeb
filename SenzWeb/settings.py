@@ -17,6 +17,7 @@ import sys
 APP_DIR = BASE_DIR + '/senz/'
 sys.path.append(APP_DIR+'utils')
 sys.path.append(APP_DIR+'poi_generator')
+sys.path.append(APP_DIR+'poi_toi')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/

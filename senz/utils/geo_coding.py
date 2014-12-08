@@ -38,10 +38,17 @@ class GeoCoder(object):
 			return lng_1,lat_1		
 		lng = 2*lng_1 - lng_2
 		lat = 2*lat_1 - lat_2
-		return lng,lat		
+		return lng,lat
+
+	def getPOI(self,lat,lng):
+		url = "http://api.map.baidu.com/geocoder/v2/?coordtype=bd09ll&location=%s,%s&output=json&ak=fPnXQ2dVgLevy7GwIomnhEMg" % (lat,lng)
+		result_info = get_source(url)
+		poi = json.loads(result_info)['result']['business']
+		return poi.encode('utf-8')
 
 if __name__ == "__main__":
 	geo = GeoCoder()
 	region = "​中国票务在线上海站"
-	lng,lat=geo.geoCoding(region)
-	print lng,lat
+	#lng,lat=geo.geoCoding(region)
+	#print lng,lat
+	print geo.getPOI(39.983424,116.322987)

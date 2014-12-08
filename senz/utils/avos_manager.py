@@ -22,6 +22,8 @@ class AvosManager(object):
                 res = AvosClass._save_to_avos(className,dataDict)
                 if 'createdAt' not in json.loads(res.content):
                         print res.content
+                else:
+                        return res.content
 
         #By Zhong.zy, Create users
         def createUser(self,userInfo):
@@ -31,7 +33,7 @@ class AvosManager(object):
                     data = json.dumps(userInfo),
                     verify=False)
                 if 'createdAt' not in json.loads(res.content):
-                        print 'Error: '+res.content
+                    print 'Error: '+res.content
                 else:
                     print 'Create user success!\n'+res.content
                     
