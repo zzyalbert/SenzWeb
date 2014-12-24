@@ -2,11 +2,11 @@
 #__author__ = 'Zhong.zy'
 
 import sys
-#sys.path.append('../utils')
+#sys.path.append('..')
 
 import json
-from avos_manager import *
-from util_opt import *
+from utils.avos_manager import *
+from utils.util_opt import *
 
 class PoiGenerator(object):
         def __init__(self):

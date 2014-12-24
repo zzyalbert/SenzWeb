@@ -3,16 +3,17 @@
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from poiGenerator import PoiGenerator
-from motion import Motion
-from poi import PoiGet
+from poi_toi.poiGenerator import PoiGenerator
+from senz.motion import Motion
+from poi_toi.poi import PoiGet
+from poi_toi.toi import ToiGet
 
 # Create your views here.
 def index(request):
 	res = ''
 	for param,value in request.GET.items():
 		res += "%s = %s, " % (param,value)
-	return HttpResponse("senz Index View: <br>"+res[:-2])
+	return HttpResponse("senzz Index View: <br>"+res[:-2])
 
 def get_poi(request):
 	poi = PoiGenerator()
@@ -33,7 +34,8 @@ def get_senz(request):
 	if 'beacon' in param.keys():
 		beacon = param['beacon']
 	poi = PoiGet().get(device_id,developer_id,location,beacon)
-	result = json.dumps(dict(POI=poi,TOI=''),ensure_ascii=False)
+	toi = ToiGet().get(location['time'])
+	result = json.dumps(dict(POI=poi,TOI=toi),ensure_ascii=False)
 	return HttpResponse(result)
 
 @csrf_exempt

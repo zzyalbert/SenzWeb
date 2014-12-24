@@ -5,9 +5,9 @@ import sys
 #sys.path.append('../utils')
 
 import json
-from avos_manager import *
-from util_opt import *
-from geo_coding import GeoCoder
+from utils.avos_manager import *
+from utils.util_opt import *
+from utils.geo_coding import GeoCoder
 
 class PoiGet(object):
 	def __init__(self):
@@ -26,7 +26,7 @@ class PoiGet(object):
 		dataDict={"device_id":device_id,"developer":user,"accuracy":location['accuracy'],"time":location['time'],"gps":gps,"speed":location['speed']}
 		self.avos.saveData('Location',dataDict)
 		poi = self.getPoi(lat,lng)
-		return poi
+		return dict(at=poi)
 
 	def getLocation(self,beacon):
 		return 0,0			

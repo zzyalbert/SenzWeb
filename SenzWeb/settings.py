@@ -9,21 +9,15 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
+import os, sys
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
-#set module path
-import sys
-APP_DIR = BASE_DIR + '/senz/'
-sys.path.append(APP_DIR+'utils')
-sys.path.append(APP_DIR+'poi_generator')
-sys.path.append(APP_DIR+'poi_toi')
+sys.path.append(BASE_DIR+'/senz/')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1mgvls*iwbq!rf3#9*5whg8wx^#^eqm4s%mbr^$$smc6*!t6^6'
+SECRET_KEY = 'ifla(+65aq$bm*)*)g6aecg448b&)x3&z)nal*!^=^@z4_)wub'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

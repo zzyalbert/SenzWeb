@@ -5,8 +5,8 @@ import sys
 #sys.path.append('../utils')
 
 import json
-from avos_manager import *
-from util_opt import *
+from utils.avos_manager import *
+from utils.util_opt import *
 
 class Motion(object):
 	def __init__(self):
