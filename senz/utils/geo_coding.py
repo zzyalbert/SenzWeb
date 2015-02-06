@@ -20,12 +20,12 @@ class GeoCoder(object):
 		poiType = json.loads(result_info[27:-1])['result']['level']
 
 		#convert
-		lng,lat = self.convert(lng_1,lat_1)
+		#lng,lat = self.convert(lng_1,lat_1)
         #save to avos
 		#dataDict = {'name':region,'type':poiType,'lattitude':lat,'longitude':lng}
 		#avosManager = AvosManager()
 		#avosManager.updateDataByName('poiClass',region,dataDict)
-		return lng,lat
+		return lng_1,lat_1
 
 	def convert(self,lng_1,lat_1):
 		#convert
