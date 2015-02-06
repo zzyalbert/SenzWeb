@@ -20,7 +20,7 @@ class GeoCoder(object):
 		poiType = json.loads(result_info[27:-1])['result']['level']
 
 		#convert
-		#lng,lat = self.convert(lng_1,lat_1)
+		lng,lat = self.convert(lng_1,lat_1)
         #save to avos
 		#dataDict = {'name':region,'type':poiType,'lattitude':lat,'longitude':lng}
 		#avosManager = AvosManager()
@@ -41,14 +41,26 @@ class GeoCoder(object):
 		return lng,lat
 
 	def getPOI(self,lat,lng):
-		url = "http://api.map.baidu.com/geocoder/v2/?coordtype=bd09ll&location=%s,%s&output=json&ak=fPnXQ2dVgLevy7GwIomnhEMg" % (lat,lng)
+		url = "http://api.map.baidu.com/geocoder/v2/?coordtype=bd09ll&location=%s,%s&output=json&ak=fPnXQ2dVgLevy7GwIomnhEMg&pois=1" % (lat,lng)
 		result_info = get_source(url)
-		poi = json.loads(result_info)['result']['business']
-		return poi.encode('utf-8')
+		print(json.loads(result_info)['result'])
+		pois = json.loads(result_info)['result']['pois']
+		if not pois:
+			return {}
+		pois.sort(key=lambda x:x['distance'])
+		#poi = pois[1]['name']
+		#return poi.encode('utf-8')
+		return pois[0]
+	
+	def getPOIByName(self,name):
+		url = "http://api.map.baidu.com/geocoder/v2/?address=%s&output=json&ak=fPnXQ2dVgLevy7GwIomnhEMg&pois=1" % name
+		result_info = get_source(url)
+		print(json.loads(result_info)['result'])
 
 if __name__ == "__main__":
 	geo = GeoCoder()
 	region = "​中国票务在线上海站"
 	#lng,lat=geo.geoCoding(region)
 	#print lng,lat
-	print geo.getPOI(39.983424,116.322987)
+	#print geo.getPOI(39.936691964083,116.45062456899)
+	print geo.getPOIByName("北京香河");
